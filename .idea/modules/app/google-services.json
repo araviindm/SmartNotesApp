@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "42195921967",
+    "firebase_url": "https://smartnotesapp-cc503.firebaseio.com",
+    "project_id": "smartnotesapp-cc503",
+    "storage_bucket": "smartnotesapp-cc503.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42195921967:android:cd92f67a55a07ae9d22ada",
+        "android_client_info": {
+          "package_name": "com.example.smartnotesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42195921967-q6gqjdj6j7al6rs02fnk8v04fuvqb0eo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smartnotesapp",
+            "certificate_hash": "7f64deb63c3579c41c982aea58a545f4c7e57e88"
+          }
+        },
+        {
+          "client_id": "42195921967-po3sfb2j5driglkln7e4i7cvnv459hik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1ewL1JgPzYm9Arn8YyA-bBXFfiEVm6ag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42195921967-po3sfb2j5driglkln7e4i7cvnv459hik.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
