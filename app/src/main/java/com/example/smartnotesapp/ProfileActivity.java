@@ -186,4 +186,9 @@ public class ProfileActivity extends AppCompatActivity {
         Intent inent = new Intent(this, MainActivity.class);
         startActivity(inent);
     }
+    public void onBackPressed(){
+        Intent backIntent = new Intent(this,HomeActivity.class);
+        startActivity(backIntent);
+    }
+
 }

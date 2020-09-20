@@ -17,10 +17,8 @@ public class UserInfo {
         this.surname = surname;
         this.phoneno = phoneno;
     }
-   // public String getUId(){return uid;}
-    public String getUserName() {
-        return name;
-    }
+    public String getUId(){return uid;}
+    public String getUserName() { return name; }
     public String getUserSurname() {
         return surname;
     }
