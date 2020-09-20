@@ -40,7 +40,6 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        databaseReference = FirebaseDatabase.getInstance().getReference();
         editTextName = (EditText)findViewById(R.id.et_username);
         profilePicImageView = findViewById(R.id.profile_pic_imageView);
         profileNameTextView = findViewById(R.id.profile_name_textView);
@@ -49,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("Users").child(firebaseAuth.getUid());
+        databaseReference = firebaseDatabase.getReference("Users").child(firebaseAuth.getUid());
         StorageReference storageReference = firebaseStorage.getReference();
         // Get the image stored on Firebase via "User id/Images/Profile Pic.jpg".
         storageReference.child(firebaseAuth.getUid()).child("Images").child("Profile Pic").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -107,8 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String surname = profileSurnameTextView.getText().toString();
                 String phoneno =  profilePhonenoTextView.getText().toString();
                 UserInfo userinformation = new UserInfo(uid,name,surname, phoneno);
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                databaseReference.child(user.getUid()).setValue(userinformation);
+                databaseReference.setValue(userinformation);
                 etUsername.onEditorAction(EditorInfo.IME_ACTION_DONE);
             }
         });
@@ -140,8 +138,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String surname = etUserSurname.getText().toString();
                 String phoneno =  profilePhonenoTextView.getText().toString();
                 UserInfo userinformation = new UserInfo(uid,name,surname, phoneno);
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                databaseReference.child(user.getUid()).setValue(userinformation);
+                databaseReference.setValue(userinformation);
                 etUserSurname.onEditorAction(EditorInfo.IME_ACTION_DONE);
             }
         });
@@ -172,8 +169,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String surname = profileSurnameTextView.getText().toString();
                 String phoneno =  etUserPhoneno.getText().toString();
                 UserInfo userinformation = new UserInfo(uid,name,surname, phoneno);
-                databaseReference.child(user.getUid()).setValue(userinformation);
-                databaseReference.child(user.getUid()).setValue(userinformation);
+                databaseReference.setValue(userinformation);
                 etUserPhoneno.onEditorAction(EditorInfo.IME_ACTION_DONE);
             }
         });
