@@ -32,19 +32,19 @@ public class HomeActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Users").child(firebaseAuth.getUid());
+        databaseReference = firebaseDatabase.getReference();
         final FirebaseUser user=firebaseAuth.getCurrentUser();
+        loadFragment(new HomeFragment());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange( DataSnapshot dataSnapshot) {
-                UserInfo userProfile = dataSnapshot.getValue(UserInfo.class);
+                UserInfo userProfile = dataSnapshot.child("Users").child(firebaseAuth.getUid()).getValue(UserInfo.class);
 
                 User.name = userProfile.getUserName();
                 User.surname = userProfile.getUserSurname();
                 User.email = user.getEmail();
                 User.phone = userProfile.getUserPhoneno();
-
-                Toast.makeText(getApplicationContext(),User.name, Toast.LENGTH_SHORT).show();
+                
 
             }
             @Override
@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        loadFragment(new HomeFragment());
+
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 

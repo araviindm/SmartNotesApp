@@ -31,19 +31,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class HomeFragment extends Fragment {
 
-    DatabaseReference databaseReference;
-    EditText editTextPost;
+
+    EditText editTextTitle,editTextTag,editTextPost;
     Button postButton;
+
+    DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     private RecyclerView postList;
     PostAdapter adapter;
-    HashMap userid,userpost;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,14 +58,14 @@ public class HomeFragment extends Fragment {
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
+        editTextTitle = (EditText) rootView.findViewById(R.id.edit_text_title);
+        editTextTag = (EditText) rootView.findViewById(R.id.edit_text_tag);
         editTextPost = (EditText) rootView.findViewById(R.id.edit_text_post);
         postButton = (Button) rootView.findViewById(R.id.edit_text_post_button);
 
         postList = (RecyclerView) rootView.findViewById(R.id.all_users_post_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
         postList.setLayoutManager(linearLayoutManager);
         postList.setAdapter(null);
 
@@ -69,16 +74,23 @@ public class HomeFragment extends Fragment {
             getActivity().finish();
             startActivity(new Intent(getActivity().getApplicationContext(),LoginActivity.class));
         }
-
+        final DateFormat dateFormat = new SimpleDateFormat();
         
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String name = User.name;
+                String title = editTextTitle.getText().toString();
+                String tag = editTextTag.getText().toString();
                 String post = editTextPost.getText().toString();
+                Date time = Calendar.getInstance().getTime();
+                String post_time = dateFormat.format(time);
+
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 String uid = user.getUid();
-                String name = User.name;
-                Posts newpost = new Posts(uid,name,post);
+
+                Posts newpost = new Posts(uid,name,title,tag,post,post_time);
                 databaseReference.child("Post").push().setValue(newpost);
                 Toast.makeText(getActivity().getApplicationContext(),"posting",Toast.LENGTH_LONG).show();
             }
@@ -90,18 +102,6 @@ public class HomeFragment extends Fragment {
     public void setUpRecyclerView(){
         Query query = FirebaseDatabase.getInstance().getReference().child("Post");
 
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userid = dataSnapshot.child("uid").getValue(HashMap.class);
-                userpost = dataSnapshot.child("post").getValue(HashMap.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
                 .setQuery(query, Posts.class)

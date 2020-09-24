@@ -12,9 +12,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></TextView>
         <TextView
+            android:id="@+id/u_title"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></TextView>
+        <TextView
+            android:id="@+id/u_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></TextView>
+        <TextView
             android:id="@+id/u_post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></TextView>
+        <TextView
+            android:id="@+id/u_post_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></TextView>
+
+
+
     </LinearLayout>
 
 </RelativeLayout>
