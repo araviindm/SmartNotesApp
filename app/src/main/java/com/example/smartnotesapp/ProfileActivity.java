@@ -69,11 +69,19 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange( DataSnapshot dataSnapshot) {
                 UserInfo userProfile = dataSnapshot.getValue(UserInfo.class);
+
+                User.name = userProfile.getUserName();
+                User.surname = userProfile.getUserSurname();
+                User.email = user.getEmail();
+                User.phone = userProfile.getUserPhoneno();
+
                 profileNameTextView.setText(userProfile.getUserName());
                 profileSurnameTextView.setText(userProfile.getUserSurname());
                 profilePhonenoTextView.setText(userProfile.getUserPhoneno());
                 textViewemailname=(TextView)findViewById(R.id.textViewEmailAdress);
                 textViewemailname.setText(user.getEmail());
+//                Toast.makeText(ProfileActivity.this,User.name, Toast.LENGTH_SHORT).show();
+
             }
             @Override
             public void onCancelled( DatabaseError databaseError) {
@@ -105,7 +113,11 @@ public class ProfileActivity extends AppCompatActivity {
                 String name = etUsername.getText().toString();
                 String surname = profileSurnameTextView.getText().toString();
                 String phoneno =  profilePhonenoTextView.getText().toString();
-                UserInfo userinformation = new UserInfo(uid,name,surname, phoneno);
+                UserInfo userinformation = new UserInfo();
+                userinformation.setUId(uid);
+                userinformation.setUserName(name);
+                userinformation.setUserSurname(surname);
+                userinformation.setUserPhoneno(phoneno);
                 databaseReference.setValue(userinformation);
                 etUsername.onEditorAction(EditorInfo.IME_ACTION_DONE);
             }
@@ -137,7 +149,11 @@ public class ProfileActivity extends AppCompatActivity {
                 String name = profileNameTextView.getText().toString();
                 String surname = etUserSurname.getText().toString();
                 String phoneno =  profilePhonenoTextView.getText().toString();
-                UserInfo userinformation = new UserInfo(uid,name,surname, phoneno);
+                UserInfo userinformation = new UserInfo();
+                userinformation.setUId(uid);
+                userinformation.setUserName(name);
+                userinformation.setUserSurname(surname);
+                userinformation.setUserPhoneno(phoneno);
                 databaseReference.setValue(userinformation);
                 etUserSurname.onEditorAction(EditorInfo.IME_ACTION_DONE);
             }
@@ -168,7 +184,11 @@ public class ProfileActivity extends AppCompatActivity {
                 String name = profileNameTextView.getText().toString();
                 String surname = profileSurnameTextView.getText().toString();
                 String phoneno =  etUserPhoneno.getText().toString();
-                UserInfo userinformation = new UserInfo(uid,name,surname, phoneno);
+                UserInfo userinformation = new UserInfo();
+                userinformation.setUId(uid);
+                userinformation.setUserName(name);
+                userinformation.setUserSurname(surname);
+                userinformation.setUserPhoneno(phoneno);
                 databaseReference.setValue(userinformation);
                 etUserPhoneno.onEditorAction(EditorInfo.IME_ACTION_DONE);
             }

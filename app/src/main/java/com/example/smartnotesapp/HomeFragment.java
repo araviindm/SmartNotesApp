@@ -77,7 +77,8 @@ public class HomeFragment extends Fragment {
                 String post = editTextPost.getText().toString();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 String uid = user.getUid();
-                Posts newpost = new Posts(uid,post);
+                String name = User.name;
+                Posts newpost = new Posts(uid,name,post);
                 databaseReference.child("Post").push().setValue(newpost);
                 Toast.makeText(getActivity().getApplicationContext(),"posting",Toast.LENGTH_LONG).show();
             }

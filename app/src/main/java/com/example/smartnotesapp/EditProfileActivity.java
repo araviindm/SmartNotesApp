@@ -105,7 +105,11 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         String name = editTextName.getText().toString().trim();
         String surname = editTextSurname.getText().toString().trim();
         String phoneno = editTextPhoneNo.getText().toString().trim();
-        UserInfo userinformation = new UserInfo(uid,name,surname,phoneno);
+        UserInfo userinformation = new UserInfo();
+        userinformation.setUId(uid);
+        userinformation.setUserName(name);
+        userinformation.setUserSurname(surname);
+        userinformation.setUserPhoneno(phoneno);
         databaseReference.child("Users").child(user.getUid()).setValue(userinformation);
         Toast.makeText(getApplicationContext(),"User information updated",Toast.LENGTH_LONG).show();
     }
