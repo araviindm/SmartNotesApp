@@ -34,7 +34,6 @@ public class HomeActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
         final FirebaseUser user=firebaseAuth.getCurrentUser();
-        loadFragment(new HomeFragment());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange( DataSnapshot dataSnapshot) {
@@ -52,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "User not found", Toast.LENGTH_SHORT).show();
             }
         });
-
+        loadFragment(new HomeFragment());
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
