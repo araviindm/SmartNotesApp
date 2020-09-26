@@ -196,12 +196,7 @@ public class ProfileActivity extends AppCompatActivity {
         AlertDialog dialog = alert.create();
         dialog.show();
     }
-
-    public void navigateLogOut(View v){
-        FirebaseAuth.getInstance().signOut();
-        Intent inent = new Intent(this, MainActivity.class);
-        startActivity(inent);
-    }
+    
     public void onBackPressed(){
         Intent backIntent = new Intent(this,HomeActivity.class);
         startActivity(backIntent);

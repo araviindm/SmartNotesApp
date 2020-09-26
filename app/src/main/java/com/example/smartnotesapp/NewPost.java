@@ -69,4 +69,8 @@ public class NewPost extends AppCompatActivity {
                 }
             });
         }
+    public void onBackPressed(){
+        Intent backIntent = new Intent(this,HomeActivity.class);
+        startActivity(backIntent);
+    }
     }

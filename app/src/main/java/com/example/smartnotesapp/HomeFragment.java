@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -31,7 +30,7 @@ public class HomeFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     private RecyclerView postList;
     PostAdapter adapter;
-    ImageButton addNewPostButton;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,20 +46,11 @@ public class HomeFragment extends Fragment {
         postList.setAdapter(null);
 
         firebaseAuth= FirebaseAuth.getInstance();
+
         if (firebaseAuth.getCurrentUser() == null){
             getActivity().finish();
             startActivity(new Intent(getActivity().getApplicationContext(),LoginActivity.class));
         }
-        addNewPostButton = rootView.findViewById(R.id.add_new_post_button);
-
-        addNewPostButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), NewPost.class));
-                getActivity().finish();
-            }
-        });
-
-        
 
         setUpRecyclerView();
         return rootView;
