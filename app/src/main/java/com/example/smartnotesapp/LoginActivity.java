@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
-                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void NavigateSignUp(View v) {
-        Intent inent = new Intent(this, SignupActivity.class);
-        startActivity(inent);
+        Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+        startActivity(intent);
     }
 }

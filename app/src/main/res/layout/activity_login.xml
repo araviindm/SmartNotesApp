@@ -28,7 +28,7 @@
             android:text="@string/sign_in"
             android:background="@drawable/custom_button"
             android:textColor="@color/white"/>
-        <TextView
+        <Button
             android:id="@+id/notamember"
             android:textSize="15sp"
             android:layout_width="wrap_content"
@@ -36,8 +36,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:text="@string/sign_up"
-            android:onClick="NavigateSignUp"
             android:clickable="true"
+            android:onClick="NavigateSignUp"
             android:gravity="center"
             android:textColor="@color/black"/>
 
