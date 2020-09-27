@@ -21,7 +21,6 @@ import com.google.firebase.database.Query;
 
 public class ProfileFragment extends Fragment {
 
-    ImageButton editProfileImageButton;
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     private RecyclerView postList;
@@ -34,20 +33,12 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        postList = (RecyclerView) rootView.findViewById(R.id.all_users_post_list);
+        postList =  rootView.findViewById(R.id.all_users_post_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         postList.setLayoutManager(linearLayoutManager);
         postList.setAdapter(null);
 
-        editProfileImageButton = rootView.findViewById(R.id.edit_Profile_button);
-
-        editProfileImageButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ProfileActivity.class));
-                getActivity().finish();
-            }
-        });
 
         firebaseAuth= FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null){

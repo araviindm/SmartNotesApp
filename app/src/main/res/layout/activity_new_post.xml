@@ -1,34 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NewPost"
     android:orientation="vertical">
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="3dp"></Space>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:textStyle="bold"
+        ></TextView>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="3dp"></Space>
     <EditText
         android:id="@+id/edit_text_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       />
+        android:background="@drawable/border"
+        android:maxLines="1"
+        android:textCursorDrawable="@color/black"></EditText>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="3dp"></Space>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tag :"
+        android:textStyle="bold"></TextView>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="3dp"></Space>
     <EditText
         android:id="@+id/edit_text_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-    <EditText
-        android:id="@+id/edit_text_post"
+        android:background="@drawable/border"
+        android:inputType="text"
+        android:textCursorDrawable="@color/black">
+    </EditText>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="3dp"></Space>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/newpost"
+            android:textStyle="bold"></TextView>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="3dp"></Space>
+        <EditText
+            android:id="@+id/edit_text_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:background="@drawable/border"
+            android:lines="5"
+            android:maxLines="10"
+            android:inputType="textMultiLine"
+            android:textCursorDrawable="@color/black">
+        </EditText>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="3dp"></Space>
+    <Button
+        android:id="@+id/edit_text_post_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/post"
-        android:id="@+id/edit_text_post_button"
-        android:layout_gravity="center_horizontal"
         android:background="@drawable/custom_button"
-        android:textColor="@color/white">
-    </Button>
+        android:textColor="@color/white"
+        />
 
 </LinearLayout>

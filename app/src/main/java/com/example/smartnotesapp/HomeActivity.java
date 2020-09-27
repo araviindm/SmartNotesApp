@@ -109,6 +109,9 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.add_new_post_button:
                 startActivity(new Intent(getApplicationContext(), NewPost.class));
                 return true;
+            case R.id.edit_Profile:
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                return true;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
