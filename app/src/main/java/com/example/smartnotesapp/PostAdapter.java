@@ -23,7 +23,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Posts, PostAdapter.Post
     protected void onBindViewHolder(@NonNull PostsViewHolder holder, int position, @NonNull Posts model) {
         holder.name.setText(model.getName());
         holder.title.setText(model.getTitle());
-        holder.tag.setText(model.getTag());
+       // holder.tag.setText(model.getTag());
         holder.post.setText(model.getPost());
         holder.post_time.setText(model.getPost_time());
 
@@ -44,7 +44,7 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Posts, PostAdapter.Post
 
             name = itemView.findViewById(R.id.u_name);
             title = itemView.findViewById(R.id.u_title);
-            tag = itemView.findViewById(R.id.u_tag);
+           // tag = itemView.findViewById(R.id.u_tag);
             post = itemView.findViewById(R.id.u_post);
             post_time = itemView.findViewById(R.id.u_post_time);
 

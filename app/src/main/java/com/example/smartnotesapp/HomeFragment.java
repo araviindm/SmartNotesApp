@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -39,7 +38,7 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home, container,    false);
 
 
-        postList = (RecyclerView) rootView.findViewById(R.id.all_users_post_list);
+        postList = rootView.findViewById(R.id.all_users_post_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         postList.setLayoutManager(linearLayoutManager);

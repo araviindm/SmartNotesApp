@@ -50,13 +50,10 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
         databaseReference = firebaseDatabase.getReference("Users").child(firebaseAuth.getUid());
         StorageReference storageReference = firebaseStorage.getReference();
-        // Get the image stored on Firebase via "User id/Images/Profile Pic.jpg".
+
         storageReference.child(firebaseAuth.getUid()).child("Images").child("Profile Pic").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                // Using "Picasso" (http://square.github.io/picasso/) after adding the dependency in the Gradle.
-                // ".fit().centerInside()" fits the entire image into the specified area.
-                // Finally, add "READ" and "WRITE" external storage permissions in the Manifest.
                 Picasso.get().load(uri).fit().centerInside().into(profilePicImageView);
             }
         });
@@ -80,7 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
                 profilePhonenoTextView.setText(userProfile.getUserPhoneno());
                 textViewemailname=(TextView)findViewById(R.id.textViewEmailAdress);
                 textViewemailname.setText(user.getEmail());
-//                Toast.makeText(ProfileActivity.this,User.name, Toast.LENGTH_SHORT).show();
+
 
             }
             @Override
@@ -95,9 +92,8 @@ public class ProfileActivity extends AppCompatActivity {
         final EditText etUsername = alertLayout.findViewById(R.id.et_username);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Name Edit");
-        // this is set the view from XML inside AlertDialog
+
         alert.setView(alertLayout);
-        // disallow cancel of AlertDialog on click of back button and outside touch
         alert.setCancelable(false);
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -131,9 +127,8 @@ public class ProfileActivity extends AppCompatActivity {
         final EditText etUserSurname = alertLayout.findViewById(R.id.et_userSurname);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Surname Edit");
-        // this is set the view from XML inside AlertDialog
+
         alert.setView(alertLayout);
-        // disallow cancel of AlertDialog on click of back button and outside touch
         alert.setCancelable(false);
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -167,9 +162,8 @@ public class ProfileActivity extends AppCompatActivity {
         final EditText etUserPhoneno = alertLayout.findViewById(R.id.et_userPhoneno);
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Phone No Edit");
-        // this is set the view from XML inside AlertDialog
+
         alert.setView(alertLayout);
-        // disallow cancel of AlertDialog on click of back button and outside touch
         alert.setCancelable(false);
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override

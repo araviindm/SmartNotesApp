@@ -1,6 +1,10 @@
 package com.example.smartnotesapp;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Posts {
 
@@ -12,7 +16,10 @@ public class Posts {
 
 
     public String getPost_time() {
-        return post_time;
+        Date post_time = Calendar.getInstance().getTime();
+        PrettyTime prettyTime = new PrettyTime(Locale.getDefault());
+        String ago = prettyTime.format(post_time);
+        return ago;
     }
 
     public void setPost_time(String post_time) {

@@ -27,9 +27,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_login);
-        SignInMail = (EditText) findViewById(R.id.SignInMail);
-        SignInPass = (EditText) findViewById(R.id.SignInPass);
-        SignInButton = (Button) findViewById(R.id.SignInButton);
+        SignInMail = findViewById(R.id.SignInMail);
+        SignInPass = findViewById(R.id.SignInPass);
+        SignInButton = findViewById(R.id.SignInButton);
 
         auth = FirebaseAuth.getInstance();
 
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Enter your password", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //authenticate user
+
                 auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override

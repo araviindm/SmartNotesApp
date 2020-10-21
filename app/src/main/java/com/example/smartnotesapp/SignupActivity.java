@@ -169,8 +169,6 @@ public class SignupActivity extends AppCompatActivity {
 
     private void sendUserData() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        // Get "User UID" from Firebase > Authentification > Users.
-        DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
         StorageReference imageReference = storageReference.child(firebaseAuth.getUid()).child("Images").child("Profile Pic"); //User id/Images/Profile Pic.jpg
         UploadTask uploadTask = imageReference.putFile(imagePath);
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -214,9 +212,8 @@ public class SignupActivity extends AppCompatActivity {
         okBT.setTextColor(Color.BLUE);
         okBT.setLayoutParams(neutralBtnLP);
     }
-
-//    public void navigate_sign_in(View v){
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        startActivity(intent);
-//    }
+    public void onBackPressed(){
+        Intent backIntent = new Intent(getApplicationContext(),LoginActivity.class);
+        startActivity(backIntent);
+    }
 }

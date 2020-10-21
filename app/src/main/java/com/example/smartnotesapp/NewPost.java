@@ -35,11 +35,11 @@ public class NewPost extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        editTextTitle = (EditText) findViewById(R.id.edit_text_title);
-        editTextTag = (EditText) findViewById(R.id.edit_text_tag);
-        editTextPost = (EditText) findViewById(R.id.edit_text_post);
-        postButton = (Button) findViewById(R.id.edit_text_post_button);
-        firebaseAuth= FirebaseAuth.getInstance();
+        editTextTitle = findViewById(R.id.edit_text_title);
+        editTextTag = findViewById(R.id.edit_text_tag);
+        editTextPost = findViewById(R.id.edit_text_post);
+        postButton = findViewById(R.id.edit_text_post_button);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         final DateFormat dateFormat = new SimpleDateFormat();
         if (firebaseAuth.getCurrentUser() == null) {

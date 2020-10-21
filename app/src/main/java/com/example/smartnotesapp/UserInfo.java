@@ -14,13 +14,6 @@ public class UserInfo {
         this.phoneno = "";
     }
 
-//    public UserInfo(String uid,String name, String surname, String phoneno){
-//
-//        this.uid = uid;
-//        this.name = name;
-//        this.surname = surname;
-//        this.phoneno = phoneno;
-//    }
     public String getUId(){return uid;}
     public String getUserName() { return name; }
     public String getUserSurname() {

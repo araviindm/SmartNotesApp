@@ -5,21 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:stretchColumns="1">
+        android:stretchColumns="1"
+        android:gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="SmartNotes"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30sp"
+            />
         <EditText
             android:id="@+id/SignInMail"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:hint="@string/mail_address"
+            android:drawableLeft="@drawable/ic_baseline_email_24"
             android:inputType="textEmailAddress"/>
         <EditText
             android:id="@+id/SignInPass"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:hint="@string/password"
+            android:drawableLeft="@drawable/ic_baseline_lock_24"
             android:inputType="textPassword"/>
         <Button
             android:id="@+id/SignInButton"
