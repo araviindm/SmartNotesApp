@@ -8,6 +8,11 @@
         app:showAsAction="ifRoom"
         android:title="@string/add_post" />
     <item
+        android:id="@+id/search_button"
+        android:icon="@drawable/ic_baseline_search_24"
+        app:showAsAction="ifRoom"
+        android:title="search" />
+    <item
         android:id="@+id/edit_Profile"
         android:title="@string/edit_profile"
         app:showAsAction="never" />

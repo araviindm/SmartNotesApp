@@ -54,6 +54,7 @@ public class NewPost extends AppCompatActivity {
                     String name = User.name;
                     String title = editTextTitle.getText().toString();
                     String tag = editTextTag.getText().toString();
+                    tag = tag.toLowerCase();
                     String post = editTextPost.getText().toString();
                     Date time = Calendar.getInstance().getTime();
                     String post_time = dateFormat.format(time);

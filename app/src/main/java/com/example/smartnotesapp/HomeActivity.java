@@ -70,8 +70,8 @@ public class HomeActivity extends AppCompatActivity {
                                 fragment = new HomeFragment();
                                 break;
 
-                            case R.id.action_search:
-                                fragment = new SearchFragment();
+                            case R.id.action_saved:
+                                fragment = new SaveFragment();
                                 break;
 
                             case R.id.action_profile:

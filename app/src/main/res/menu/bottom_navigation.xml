@@ -9,10 +9,10 @@
         app:showAsAction = "ifRoom"
         />
     <item
-        android:id = "@+id/action_search"
+        android:id = "@+id/action_saved"
         android:enabled = "true"
-        android:icon="@drawable/ic_baseline_search_24"
-        android:title="Search"
+        android:icon="@drawable/ic_baseline_save_24"
+        android:title="Saved"
         app:showAsAction = "ifRoom"
         />
     <item
