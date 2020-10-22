@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -40,17 +42,19 @@ public class HomeActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange( DataSnapshot dataSnapshot) {
-                UserInfo userProfile = dataSnapshot.child("Users").child(firebaseAuth.getUid()).getValue(UserInfo.class);
+                UserInfo userProfile = dataSnapshot.child("Users").child(Objects.requireNonNull(firebaseAuth.getUid())).getValue(UserInfo.class);
 
+                assert userProfile != null;
                 User.name = userProfile.getUserName();
                 User.surname = userProfile.getUserSurname();
+                assert user != null;
                 User.email = user.getEmail();
                 User.phone = userProfile.getUserPhoneno();
                 
 
             }
             @Override
-            public void onCancelled( DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getApplicationContext(), "User not found", Toast.LENGTH_SHORT).show();
             }
         });
@@ -106,6 +110,9 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_new_post_button:
                 startActivity(new Intent(getApplicationContext(), NewPost.class));
+                return true;
+            case R.id.search_button:
+                startActivity(new Intent(getApplicationContext(), SearchActivity.class));
                 return true;
             case R.id.edit_Profile:
                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));

@@ -16,10 +16,7 @@ public class Posts {
 
 
     public String getPost_time() {
-        Date post_time = Calendar.getInstance().getTime();
-        PrettyTime prettyTime = new PrettyTime(Locale.getDefault());
-        String ago = prettyTime.format(post_time);
-        return ago;
+    return post_time;
     }
 
     public void setPost_time(String post_time) {

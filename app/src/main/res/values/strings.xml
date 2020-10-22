@@ -35,4 +35,11 @@
     <string name="title">Title:</string>
     <string name="newpost">Post :</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="follow_button">Follow Button</string>
+    <string name="no_button">No Button</string>
+    <string name="no">No</string>
+    <string name="yes_button">Yes Button</string>
+    <string name="yes">Yes</string>
+    <string name="search_query">Search Query</string>
+    <string name="search_button">Search Button</string>
 </resources>
