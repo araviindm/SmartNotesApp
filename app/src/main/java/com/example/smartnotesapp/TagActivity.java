@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -34,7 +36,6 @@ public class TagActivity extends AppCompatActivity {
     TagAdapter adapter;
     Button nextButton;
     FirebaseUser firebaseUser;
-    private List tags = new ArrayList<>();
 
 
     @Override
@@ -43,8 +44,7 @@ public class TagActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tag);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        tagList = findViewById(R.id.all_users_post_list);
-        nextButton = findViewById(R.id.next_button);
+
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth= FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -54,13 +54,13 @@ public class TagActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
-
         tagList = findViewById(R.id.all_users_post_list);
-        setUpRecyclerView();
-        adapter = new TagAdapter(tags,getApplicationContext());
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getApplicationContext());
-        tagList.setLayoutManager(manager);
-        tagList.setAdapter(adapter);
+        nextButton = findViewById(R.id.next_button);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        tagList.setLayoutManager(linearLayoutManager);
+        tagList.setAdapter(null);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,39 +68,32 @@ public class TagActivity extends AppCompatActivity {
                 if(followArrayList.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please click one", Toast.LENGTH_SHORT).show();
                 }else{
+                  //  databaseReference.child("following").child(firebaseUser.getUid()).setValue(followArrayList);
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 }
             }
         });
+        setUpRecyclerView();
     }
     public void setUpRecyclerView() {
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               // List<String> following = new ArrayList<>();
-                for(DataSnapshot snap : dataSnapshot.child("Post").getChildren()){
-                    Posts tag = snap.getValue(Posts.class);
-                       // Tags tag = (Tags) snap.child("tag").getValue();
-                        tags.add(tag);
-                        adapter.notifyDataSetChanged();
 
+        Query query = databaseReference.child("Post");
 
-                }
+        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
+                .setQuery(query, Posts.class)
+                .build();
 
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "User not found", Toast.LENGTH_SHORT).show();
-            }
-        });
+        adapter = new TagAdapter(options);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        tagList.setLayoutManager(linearLayoutManager);
+        tagList.setAdapter(adapter);
     }
     @Override
     public void onStart() {
         super.onStart();
         if (adapter != null) {
-            adapter.notifyDataSetChanged();
+            adapter.startListening();
         }
 
     }
@@ -108,6 +101,6 @@ public class TagActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        adapter.notifyDataSetChanged();
+        adapter.stopListening();
     }
 }
