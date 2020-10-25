@@ -6,4 +6,5 @@ public class User {
     public static String email;
     public static String phone;
     public static String time;
+    public static String tag;
 }

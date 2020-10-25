@@ -74,23 +74,11 @@ public class HomeFragment extends Fragment {
     }
     public void setUpRecyclerView(){
         final FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
-//        databaseReference.child("Users").child(firebaseUser.getUid()).child("following").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for(DataSnapshot snap : dataSnapshot.getChildren() ){
-//                    FollowArray.followArrayList.add(snap.toString());
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Toast.makeText(getActivity().getApplicationContext(), "User not found", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                post = new ArrayList<>();
                 List<String> following = new ArrayList<>();
                 for(DataSnapshot snap : dataSnapshot.child("following").child(firebaseUser.getUid()).getChildren()){
 

@@ -1,5 +1,6 @@
 package com.example.smartnotesapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,10 +14,15 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.example.smartnotesapp.FollowArray.followArrayList;
@@ -28,6 +34,7 @@ public class TagActivity extends AppCompatActivity {
     TagAdapter adapter;
     Button nextButton;
     FirebaseUser firebaseUser;
+    private List tags = new ArrayList<>();
 
 
     @Override
@@ -38,12 +45,6 @@ public class TagActivity extends AppCompatActivity {
 
         tagList = findViewById(R.id.all_users_post_list);
         nextButton = findViewById(R.id.next_button);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        tagList.setLayoutManager(linearLayoutManager);
-        tagList.setAdapter(null);
-
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth= FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -53,7 +54,13 @@ public class TagActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
+
+        tagList = findViewById(R.id.all_users_post_list);
         setUpRecyclerView();
+        adapter = new TagAdapter(tags,getApplicationContext());
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getApplicationContext());
+        tagList.setLayoutManager(manager);
+        tagList.setAdapter(adapter);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +68,6 @@ public class TagActivity extends AppCompatActivity {
                 if(followArrayList.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please click one", Toast.LENGTH_SHORT).show();
                 }else{
-//                    databaseReference.child("Users").child(firebaseUser.getUid()).child("following").setValue(followArrayList);
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 }
             }
@@ -69,22 +75,32 @@ public class TagActivity extends AppCompatActivity {
     }
     public void setUpRecyclerView() {
 
-        Query query = databaseReference.child("Post");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               // List<String> following = new ArrayList<>();
+                for(DataSnapshot snap : dataSnapshot.child("Post").getChildren()){
+                    Posts tag = snap.getValue(Posts.class);
+                       // Tags tag = (Tags) snap.child("tag").getValue();
+                        tags.add(tag);
+                        adapter.notifyDataSetChanged();
 
-        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
-                .setQuery(query, Posts.class)
-                .build();
 
-        adapter = new TagAdapter(options);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        tagList.setLayoutManager(linearLayoutManager);
-        tagList.setAdapter(adapter);
+                }
+
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "User not found", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     @Override
     public void onStart() {
         super.onStart();
         if (adapter != null) {
-            adapter.startListening();
+            adapter.notifyDataSetChanged();
         }
 
     }
@@ -92,11 +108,6 @@ public class TagActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (adapter != null) {
-            adapter.stopListening();
-        }
-
+        adapter.notifyDataSetChanged();
     }
-
-
 }

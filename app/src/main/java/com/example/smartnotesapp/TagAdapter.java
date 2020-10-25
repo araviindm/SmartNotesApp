@@ -1,7 +1,6 @@
 package com.example.smartnotesapp;
 
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,64 +8,57 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import java.util.List;
 
 import static com.example.smartnotesapp.FollowArray.followArrayList;
 
-public class TagAdapter extends FirebaseRecyclerAdapter<Posts, TagAdapter.TagsViewHolder> {
+public class TagAdapter extends RecyclerView.Adapter<TagAdapter.MyViewHolder> {
 
-    DatabaseReference databaseReference;
-    FirebaseAuth firebaseAuth;
-    FirebaseUser firebaseUser;
+    List<Posts> post;
 
-    public TagAdapter(@NonNull FirebaseRecyclerOptions<Posts> options) {
-        super(options);
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        firebaseAuth= FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-    }
-
-    @Override
-    protected void onBindViewHolder(@NonNull final TagAdapter.TagsViewHolder holder, int position, @NonNull Posts model) {
-
-         holder.tag.setText(model.getTag());
-
-         holder.followButton.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 if(!followArrayList.contains((String) holder.tag.getText())) {
-                     followArrayList.add((String) holder.tag.getText());
-                 }
-                 databaseReference.child("following").child(firebaseUser.getUid()).setValue(followArrayList);
-             }
-         });
-
-
+    public TagAdapter(List<Posts> post, Context applicationContext) {
+        this.post = post;
     }
 
     @NonNull
     @Override
-    public TagAdapter.TagsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tag_list,
-                viewGroup, false);
-        return new TagsViewHolder(v);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.tag_list, parent, false);
+        return new MyViewHolder(itemView);
     }
-    public class TagsViewHolder extends RecyclerView.ViewHolder {
 
+    @Override
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+
+      holder.tag.setText(post.get(position).getTag());
+        holder.followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!followArrayList.contains((String) holder.tag.getText())) {
+                    followArrayList.add((String) holder.tag.getText());
+                }
+                databaseReference.child("following").child(firebaseUser.getUid()).setValue(followArrayList);
+            }
+        });
+
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return post.size();
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tag;
         Button followButton;
-        public TagsViewHolder(@NonNull View itemView) {
-            super(itemView);
 
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
             tag = itemView.findViewById(R.id.u_tag);
             followButton = itemView.findViewById(R.id.follow_button);
 
