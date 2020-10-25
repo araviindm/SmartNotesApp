@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import static com.example.smartnotesapp.FollowArray.followArrayList;
+
 
 public class SearchActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
@@ -55,6 +57,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                setUpRecyclerView();
+               databaseReference.child("following").setValue(followArrayList);
                adapter.startListening();
             }
         });

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,23 +13,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 public class HomeFragment extends Fragment {
 
 
-    FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
+
     private RecyclerView postList;
-    PostAdapter adapter;
+    HomePostAdapter adapter;
+    private List post = new ArrayList<>();
 
 
     @Override
@@ -37,43 +49,77 @@ public class HomeFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_home, container,    false);
 
-
-        postList = rootView.findViewById(R.id.all_users_post_list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        postList.setLayoutManager(linearLayoutManager);
-        postList.setAdapter(null);
-
         firebaseAuth= FirebaseAuth.getInstance();
-
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
         if (firebaseAuth.getCurrentUser() == null){
             getActivity().finish();
             startActivity(new Intent(getActivity().getApplicationContext(),LoginActivity.class));
         }
 
+
+        postList = rootView.findViewById(R.id.all_users_post_list);
         setUpRecyclerView();
+        adapter = new HomePostAdapter(post,getActivity().getApplicationContext());
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
+        postList.setLayoutManager(manager);
+        postList.setAdapter(adapter);
+
+
+
+
+
         return rootView;
         
     }
     public void setUpRecyclerView(){
-        Query query = FirebaseDatabase.getInstance().getReference().child("Post");
+        final FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
+//        databaseReference.child("Users").child(firebaseUser.getUid()).child("following").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for(DataSnapshot snap : dataSnapshot.getChildren() ){
+//                    FollowArray.followArrayList.add(snap.toString());
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Toast.makeText(getActivity().getApplicationContext(), "User not found", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                post = new ArrayList<>();
+                List<String> following = new ArrayList<>();
+                for(DataSnapshot snap : dataSnapshot.child("following").child(firebaseUser.getUid()).getChildren()){
+
+                        following.add(snap.getValue().toString());
+
+                }
+               for(DataSnapshot snap : dataSnapshot.child("Post").getChildren()){
+                   Posts posts = snap.getValue(Posts.class);
+                   if(following.contains(posts.getTag())){
+                       post.add(posts);
+                       adapter.notifyDataSetChanged();
+                   }
+
+               }
 
 
-        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
-                .setQuery(query, Posts.class)
-                .build();
-
-        adapter = new PostAdapter(options);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        postList.setLayoutManager(linearLayoutManager);
-        postList.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public void onStart() {
         super.onStart();
         if (adapter != null) {
-            adapter.startListening();
+            adapter.notifyDataSetChanged();
         }
 
     }
@@ -81,11 +127,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (adapter != null) {
-            adapter.stopListening();
-        }
-
+        adapter.notifyDataSetChanged();
     }
-
-
 }

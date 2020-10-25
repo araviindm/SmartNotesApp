@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
+import static com.example.smartnotesapp.FollowArray.followArrayList;
+
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -32,17 +35,18 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_home);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
-        final FirebaseUser user=firebaseAuth.getCurrentUser();
-        databaseReference.addValueEventListener(new ValueEventListener() {
+            firebaseAuth = FirebaseAuth.getInstance();
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference().child("Users").child(Objects.requireNonNull(firebaseAuth.getUid()));
+            final FirebaseUser user=firebaseAuth.getCurrentUser();
+
+            databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange( DataSnapshot dataSnapshot) {
-                UserInfo userProfile = dataSnapshot.child("Users").child(Objects.requireNonNull(firebaseAuth.getUid())).getValue(UserInfo.class);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserInfo userProfile = dataSnapshot.child("details").getValue(UserInfo.class);
 
                 assert userProfile != null;
                 User.name = userProfile.getUserName();
@@ -50,7 +54,6 @@ public class HomeActivity extends AppCompatActivity {
                 assert user != null;
                 User.email = user.getEmail();
                 User.phone = userProfile.getUserPhoneno();
-                
 
             }
             @Override
@@ -58,6 +61,7 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "User not found", Toast.LENGTH_SHORT).show();
             }
         });
+        //databaseReference.child("following").setValue(followArrayList);
         loadFragment(new HomeFragment());
 
 

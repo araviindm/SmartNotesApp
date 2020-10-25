@@ -21,11 +21,13 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Posts, PostAdapter.Post
 
     @Override
     protected void onBindViewHolder(@NonNull PostsViewHolder holder, int position, @NonNull Posts model) {
-        holder.name.setText(model.getName());
-        holder.title.setText(model.getTitle());
-       // holder.tag.setText(model.getTag());
-        holder.post.setText(model.getPost());
-        holder.post_time.setText(model.getPost_time());
+            holder.name.setText(model.getName());
+            holder.title.setText(model.getTitle());
+            // holder.tag.setText(model.getTag());
+            holder.post.setText(model.getPost());
+            holder.post_time.setText(model.getPost_time());
+
+
 
     }
 

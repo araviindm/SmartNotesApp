@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -135,15 +137,15 @@ public class SignupActivity extends AppCompatActivity {
                                             userInformation();
                                             // sendUserData();
                                             finish();
-                                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                            startActivity(new Intent(getApplicationContext(), TagActivity.class));
                                         }
                                         else {
                                             userInformation();
                                             sendUserData();
                                             finish();
-                                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                            startActivity(new Intent(getApplicationContext(), TagActivity.class));
                                         }
-                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                        startActivity(new Intent(getApplicationContext(), TagActivity.class));
                                         finish();
                                     }
                                 }
@@ -154,6 +156,7 @@ public class SignupActivity extends AppCompatActivity {
     }
     private void userInformation(){
         FirebaseUser user = firebaseAuth.getCurrentUser();
+        assert user != null;
         String uid = user.getUid();
         String name = editTextName.getText().toString().trim();
         String surname = editTextSurname.getText().toString().trim();
@@ -163,13 +166,13 @@ public class SignupActivity extends AppCompatActivity {
         userinformation.setUserName(name);
         userinformation.setUserSurname(surname);
         userinformation.setUserPhoneno(phoneno);
-        databaseReference.child("Users").child(user.getUid()).setValue(userinformation);
+        databaseReference.child("Users").child(user.getUid()).child("details").setValue(userinformation);
         Toast.makeText(getApplicationContext(),"User information updated",Toast.LENGTH_LONG).show();
     }
 
     private void sendUserData() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        StorageReference imageReference = storageReference.child(firebaseAuth.getUid()).child("Images").child("Profile Pic"); //User id/Images/Profile Pic.jpg
+        StorageReference imageReference = storageReference.child(Objects.requireNonNull(firebaseAuth.getUid())).child("Images").child("Profile Pic"); //User id/Images/Profile Pic.jpg
         UploadTask uploadTask = imageReference.putFile(imagePath);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
@@ -184,6 +187,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     public void openSelectProfilePictureDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         TextView title = new TextView(this);

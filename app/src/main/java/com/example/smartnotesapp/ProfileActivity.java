@@ -1,5 +1,6 @@
 package com.example.smartnotesapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +28,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private TextView profileNameTextView, profileSurnameTextView, profilePhonenoTextView;
@@ -48,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        databaseReference = firebaseDatabase.getReference("Users").child(firebaseAuth.getUid());
+        databaseReference = firebaseDatabase.getReference("Users").child(Objects.requireNonNull(firebaseAuth.getUid())).child("details");
         StorageReference storageReference = firebaseStorage.getReference();
 
         storageReference.child(firebaseAuth.getUid()).child("Images").child("Profile Pic").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -64,9 +67,10 @@ public class ProfileActivity extends AppCompatActivity {
         final FirebaseUser user=firebaseAuth.getCurrentUser();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange( DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserInfo userProfile = dataSnapshot.getValue(UserInfo.class);
 
+                assert userProfile != null;
                 User.name = userProfile.getUserName();
                 User.surname = userProfile.getUserSurname();
                 User.email = user.getEmail();
@@ -81,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
             @Override
-            public void onCancelled( DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(ProfileActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -104,6 +108,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                assert user != null;
                 String uid = user.getUid();
 
                 String name = etUsername.getText().toString();
@@ -140,6 +145,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
 
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                assert user != null;
                 String uid = user.getUid();
                 String name = profileNameTextView.getText().toString();
                 String surname = etUserSurname.getText().toString();
@@ -174,6 +180,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                assert user != null;
                 String uid = user.getUid();
                 String name = profileNameTextView.getText().toString();
                 String surname = profileSurnameTextView.getText().toString();

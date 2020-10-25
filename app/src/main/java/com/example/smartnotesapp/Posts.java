@@ -1,11 +1,5 @@
 package com.example.smartnotesapp;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 public class Posts {
 
     public String uid;

@@ -5,5 +5,5 @@ public class User {
     public static String surname;
     public static String email;
     public static String phone;
-    public  static String time;
+    public static String time;
 }
