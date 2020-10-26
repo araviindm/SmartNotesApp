@@ -39,8 +39,9 @@ public class TagAdapter extends FirebaseRecyclerAdapter<Posts, TagAdapter.TagsVi
             public void onClick(View v) {
                 if(!followArrayList.contains(holder.tag.getText())) {
                     followArrayList.add((String) holder.tag.getText());
+                    databaseReference.child("following").child(firebaseUser.getUid()).push().setValue(holder.tag.getText());
                 }
-                databaseReference.child("following").child(firebaseUser.getUid()).setValue(followArrayList);
+
             }
         });
 

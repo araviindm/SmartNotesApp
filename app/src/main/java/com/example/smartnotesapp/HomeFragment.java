@@ -98,7 +98,6 @@ public class HomeFragment extends Fragment {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
             }
         });
     }

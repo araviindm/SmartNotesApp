@@ -1,6 +1,7 @@
 package com.example.smartnotesapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +32,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.smartnotesapp.FollowArray.followArrayList;
 
@@ -90,10 +94,16 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         followButtonInSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //databaseReference.child("following").child(firebaseUser.getUid()).setValue();
+                String searchText = searchQuery.getText().toString();
+                searchText = searchText.toLowerCase();
+                if(!followArrayList.contains(searchText)) {
+                    followArrayList.add(searchText);
+                    databaseReference.child("following").child(firebaseUser.getUid()).push().setValue(searchText);
+                }
             }
         });
     }
@@ -114,6 +124,10 @@ public class SearchActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         postList.setLayoutManager(linearLayoutManager);
         postList.setAdapter(adapter);
+    }
+    public void onBackPressed(){
+        Intent backIntent = new Intent(this,HomeActivity.class);
+        startActivity(backIntent);
     }
 
    
