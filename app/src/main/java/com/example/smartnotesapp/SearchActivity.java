@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -77,16 +78,17 @@ public class SearchActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 setUpRecyclerView();
                 followLinearLayout.setVisibility(LinearLayout.VISIBLE);
                 adapter.startListening();
+
             }
         });
         searchQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
                     setUpRecyclerView();
                     followLinearLayout.setVisibility(LinearLayout.VISIBLE);
                     adapter.startListening();
@@ -98,12 +100,15 @@ public class SearchActivity extends AppCompatActivity {
         followButtonInSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String searchText = searchQuery.getText().toString();
-                searchText = searchText.toLowerCase();
-                if(!followArrayList.contains(searchText)) {
-                    followArrayList.add(searchText);
-                    databaseReference.child("following").child(firebaseUser.getUid()).push().setValue(searchText);
-                }
+
+                    String searchText = searchQuery.getText().toString();
+                    searchText = searchText.toLowerCase();
+                    if(!followButtonInSearch.getText().equals("following")) {
+                        if (!followArrayList.contains(searchText)) {
+                            followArrayList.add(searchText);
+                            databaseReference.child("following").child(firebaseUser.getUid()).push().setValue(searchText);
+                        }
+                    }
             }
         });
     }
@@ -116,6 +121,25 @@ public class SearchActivity extends AppCompatActivity {
         tagView.setText(searchText);
         Query query = databaseReference.child("Post").orderByChild("tag").equalTo(searchText);
 
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String searchText = searchQuery.getText().toString();
+                searchText = searchText.toLowerCase();
+                for(DataSnapshot snap : dataSnapshot.child("following").child(firebaseUser.getUid()).getChildren()){
+
+                    if( searchText.equals(snap.getValue().toString()) ){
+                        followButtonInSearch.setBackgroundColor(Color.WHITE);
+                        followButtonInSearch.setText(R.string.following);
+                        followButtonInSearch.setTextColor(Color.BLACK);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
         FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
                 .setQuery(query, Posts.class)
                 .build();
@@ -126,7 +150,7 @@ public class SearchActivity extends AppCompatActivity {
         postList.setAdapter(adapter);
     }
     public void onBackPressed(){
-        Intent backIntent = new Intent(this,HomeActivity.class);
+        Intent backIntent = new Intent(getApplicationContext(),HomeActivity.class);
         startActivity(backIntent);
     }
 

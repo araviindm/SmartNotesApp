@@ -52,6 +52,7 @@ public class NewPost extends AppCompatActivity {
                 public void onClick(View v) {
 
                     String name = User.name;
+                    String surname = User.surName;
                     String title = editTextTitle.getText().toString();
                     String tag = editTextTag.getText().toString();
                     tag = tag.toLowerCase();
@@ -62,7 +63,7 @@ public class NewPost extends AppCompatActivity {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     String uid = user.getUid();
 
-                    Posts newpost = new Posts(uid,name,title,tag,post,post_time);
+                    Posts newpost = new Posts(uid,name,surname,title,tag,post,post_time);
                     databaseReference.child("Post").push().setValue(newpost);
                     Toast.makeText(getApplicationContext(),"posting",Toast.LENGTH_LONG).show();
                     startActivity(new Intent(getApplicationContext(),HomeActivity.class));

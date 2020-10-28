@@ -8,6 +8,16 @@ public class Posts {
     public String post;
     public String post_time;
 
+    public String getSurName() {
+        return surName;
+    }
+
+    public void setSurName(String surName) {
+        this.surName = surName;
+    }
+
+    public String surName;
+
 
     public String getPost_time() {
     return post_time;
@@ -30,9 +40,10 @@ public class Posts {
     public Posts(){
     }
 
-    public Posts(String uid,String name,String title,String tag, String post,String post_time) {
+    public Posts(String uid,String name,String surName,String title,String tag, String post,String post_time) {
         this.uid = uid;
         this.name = name;
+        this.surName = surName;
         this.title = title;
         this.tag = tag;
         this.post = post;

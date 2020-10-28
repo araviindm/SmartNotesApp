@@ -31,8 +31,9 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         holder.name.setText(post.get(position).getName());
+        holder.surName.setText(post.get(position).getSurName());
         holder.title.setText(post.get(position).getTitle());
-        // holder.tag.setText(model.getTag());
+        holder.tag.setText(post.get(position).getTag());
         holder.post.setText(post.get(position).getPost());
         holder.post_time.setText(post.get(position).getPost_time());
 
@@ -45,14 +46,15 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView name, title, tag, post, post_time;
+        TextView name,surName, title, tag, post, post_time;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             name = itemView.findViewById(R.id.u_name);
+            surName = itemView.findViewById(R.id.u_last_name);
             title = itemView.findViewById(R.id.u_title);
-            // tag = itemView.findViewById(R.id.u_tag);
+            tag = itemView.findViewById(R.id.u_tag);
             post = itemView.findViewById(R.id.u_post);
             post_time = itemView.findViewById(R.id.u_post_time);
         }

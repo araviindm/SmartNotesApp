@@ -72,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 assert userProfile != null;
                 User.name = userProfile.getUserName();
-                User.surname = userProfile.getUserSurname();
+                User.surName = userProfile.getUserSurname();
                 User.email = user.getEmail();
                 User.phone = userProfile.getUserPhoneno();
 

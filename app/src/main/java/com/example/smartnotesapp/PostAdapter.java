@@ -22,8 +22,9 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Posts, PostAdapter.Post
     @Override
     protected void onBindViewHolder(@NonNull PostsViewHolder holder, int position, @NonNull Posts model) {
             holder.name.setText(model.getName());
+            holder.surName.setText(model.getSurName());
             holder.title.setText(model.getTitle());
-            // holder.tag.setText(model.getTag());
+            holder.tag.setText(model.getTag());
             holder.post.setText(model.getPost());
             holder.post_time.setText(model.getPost_time());
 
@@ -40,13 +41,14 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Posts, PostAdapter.Post
     }
     public class PostsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name,title,tag,post,post_time;
+        TextView name,surName,title,tag,post,post_time;
         public PostsViewHolder(@NonNull View itemView) {
             super(itemView);
 
             name = itemView.findViewById(R.id.u_name);
+            surName = itemView.findViewById(R.id.u_last_name);
             title = itemView.findViewById(R.id.u_title);
-           // tag = itemView.findViewById(R.id.u_tag);
+            tag = itemView.findViewById(R.id.u_tag);
             post = itemView.findViewById(R.id.u_post);
             post_time = itemView.findViewById(R.id.u_post_time);
 

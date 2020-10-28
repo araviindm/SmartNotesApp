@@ -50,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 assert userProfile != null;
                 User.name = userProfile.getUserName();
-                User.surname = userProfile.getUserSurname();
+                User.surName = userProfile.getUserSurname();
                 assert user != null;
                 User.email = user.getEmail();
                 User.phone = userProfile.getUserPhoneno();

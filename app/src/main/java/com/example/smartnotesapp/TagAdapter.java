@@ -1,5 +1,6 @@
 package com.example.smartnotesapp;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class TagAdapter extends FirebaseRecyclerAdapter<Posts, TagAdapter.TagsVi
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+
     public TagAdapter(@NonNull FirebaseRecyclerOptions<Posts> options) {
         super(options);
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -37,10 +39,14 @@ public class TagAdapter extends FirebaseRecyclerAdapter<Posts, TagAdapter.TagsVi
         holder.followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(!followArrayList.contains(holder.tag.getText())) {
                     followArrayList.add((String) holder.tag.getText());
                     databaseReference.child("following").child(firebaseUser.getUid()).push().setValue(holder.tag.getText());
                 }
+                holder.followButton.setBackgroundColor(Color.WHITE);
+                holder.followButton.setText(R.string.following);
+                holder.followButton.setTextColor(Color.BLACK);
 
             }
         });
