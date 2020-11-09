@@ -43,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        editTextName = (EditText)findViewById(R.id.et_username);
+        editTextName = findViewById(R.id.et_username);
         profilePicImageView = findViewById(R.id.profile_pic_imageView);
         profileNameTextView = findViewById(R.id.profile_name_textView);
         profileSurnameTextView = findViewById(R.id.profile_surname_textView);
@@ -51,10 +51,10 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        databaseReference = firebaseDatabase.getReference("Users").child(Objects.requireNonNull(firebaseAuth.getUid())).child("details");
         StorageReference storageReference = firebaseStorage.getReference();
+        databaseReference = firebaseDatabase.getReference();
 
-        storageReference.child(firebaseAuth.getUid()).child("Images").child("Profile Pic").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child(Objects.requireNonNull(firebaseAuth.getUid())).child("Images").child("Profile Pic").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).fit().centerInside().into(profilePicImageView);
@@ -65,7 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
         final FirebaseUser user=firebaseAuth.getCurrentUser();
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Users").child(user.getUid()).child("details").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserInfo userProfile = dataSnapshot.getValue(UserInfo.class);
@@ -79,7 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
                 profileNameTextView.setText(userProfile.getUserName());
                 profileSurnameTextView.setText(userProfile.getUserSurname());
                 profilePhonenoTextView.setText(userProfile.getUserPhoneno());
-                textViewemailname=(TextView)findViewById(R.id.textViewEmailAdress);
+                textViewemailname=findViewById(R.id.textViewEmailAdress);
                 textViewemailname.setText(user.getEmail());
 
 
@@ -107,11 +107,12 @@ public class ProfileActivity extends AppCompatActivity {
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
                 assert user != null;
-                String uid = user.getUid();
+                final String uid = user.getUid();
 
-                String name = etUsername.getText().toString();
+                final String name = etUsername.getText().toString();
+                User.name = etUsername.getText().toString();
                 String surname = profileSurnameTextView.getText().toString();
                 String phoneno =  profilePhonenoTextView.getText().toString();
                 UserInfo userinformation = new UserInfo();
@@ -119,8 +120,9 @@ public class ProfileActivity extends AppCompatActivity {
                 userinformation.setUserName(name);
                 userinformation.setUserSurname(surname);
                 userinformation.setUserPhoneno(phoneno);
-                databaseReference.setValue(userinformation);
+                databaseReference.child("Users").child(Objects.requireNonNull(firebaseAuth.getUid())).child("details").setValue(userinformation);
                 etUsername.onEditorAction(EditorInfo.IME_ACTION_DONE);
+
             }
         });
         AlertDialog dialog = alert.create();
@@ -147,16 +149,19 @@ public class ProfileActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 assert user != null;
                 String uid = user.getUid();
-                String name = profileNameTextView.getText().toString();
-                String surname = etUserSurname.getText().toString();
+                final String name = profileNameTextView.getText().toString();
+                final String surname = etUserSurname.getText().toString();
+                User.surName = etUserSurname.getText().toString();
                 String phoneno =  profilePhonenoTextView.getText().toString();
                 UserInfo userinformation = new UserInfo();
                 userinformation.setUId(uid);
                 userinformation.setUserName(name);
                 userinformation.setUserSurname(surname);
                 userinformation.setUserPhoneno(phoneno);
-                databaseReference.setValue(userinformation);
+                databaseReference.child("Users").child(Objects.requireNonNull(firebaseAuth.getUid())).child("details").setValue(userinformation);
                 etUserSurname.onEditorAction(EditorInfo.IME_ACTION_DONE);
+
+
             }
         });
         AlertDialog dialog = alert.create();
@@ -190,7 +195,7 @@ public class ProfileActivity extends AppCompatActivity {
                 userinformation.setUserName(name);
                 userinformation.setUserSurname(surname);
                 userinformation.setUserPhoneno(phoneno);
-                databaseReference.setValue(userinformation);
+                databaseReference.child("Users").child(Objects.requireNonNull(firebaseAuth.getUid())).child("details").setValue(userinformation);
                 etUserPhoneno.onEditorAction(EditorInfo.IME_ACTION_DONE);
             }
         });
@@ -199,6 +204,20 @@ public class ProfileActivity extends AppCompatActivity {
     }
     
     public void onBackPressed(){
+        databaseReference.child("Post").orderByChild("uid").equalTo(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snap : dataSnapshot.getChildren()){
+                    snap.getRef().child("name").setValue(User.name);
+                    snap.getRef().child("surName").setValue(User.surName);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         Intent backIntent = new Intent(this,HomeActivity.class);
         startActivity(backIntent);
     }

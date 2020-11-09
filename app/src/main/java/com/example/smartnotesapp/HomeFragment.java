@@ -13,17 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -74,26 +74,20 @@ public class HomeFragment extends Fragment {
     }
     public void setUpRecyclerView(){
         final FirebaseUser firebaseUser=firebaseAuth.getCurrentUser();
-
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<String> following = new ArrayList<>();
-                for(DataSnapshot snap : dataSnapshot.child("following").child(firebaseUser.getUid()).getChildren()){
-
-                        following.add(snap.getValue().toString());
-
+                for(DataSnapshot snap : dataSnapshot.child("following").child(Objects.requireNonNull(firebaseUser).getUid()).getChildren()){
+                    following.add(Objects.requireNonNull(snap.getValue()).toString());
                 }
                for(DataSnapshot snap : dataSnapshot.child("Post").getChildren()){
                    Posts posts = snap.getValue(Posts.class);
-                   if(following.contains(posts.getTag())){
+                   if(following.contains(Objects.requireNonNull(posts).getTag())){
                        post.add(posts);
                        adapter.notifyDataSetChanged();
                    }
-
                }
-
 
             }
             @Override

@@ -1,6 +1,8 @@
 package com.example.smartnotesapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyViewHolder> {
 
@@ -35,10 +42,18 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
         holder.title.setText(post.get(position).getTitle());
         holder.tag.setText(post.get(position).getTag());
         holder.post.setText(post.get(position).getPost());
-        holder.post_time.setText(post.get(position).getPost_time());
+
+        @SuppressLint("SimpleDateFormat") final SimpleDateFormat inputFormat = new SimpleDateFormat();
+        Date date = null;
+        try {
+            date = inputFormat.parse(post.get(position).getPost_time());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String ago = (String) DateUtils.getRelativeTimeSpanString(Objects.requireNonNull(date).getTime() , Calendar.getInstance().getTimeInMillis(), DateUtils.MINUTE_IN_MILLIS);
+        holder.post_time.setText(ago);
 
     }
-
 
     @Override
     public int getItemCount() {

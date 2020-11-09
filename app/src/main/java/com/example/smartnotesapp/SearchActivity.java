@@ -1,7 +1,6 @@
 package com.example.smartnotesapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,12 +18,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,9 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 import static com.example.smartnotesapp.FollowArray.followArrayList;
 
@@ -128,7 +123,7 @@ public class SearchActivity extends AppCompatActivity {
                 searchText = searchText.toLowerCase();
                 for(DataSnapshot snap : dataSnapshot.child("following").child(firebaseUser.getUid()).getChildren()){
 
-                    if( searchText.equals(snap.getValue().toString()) ){
+                    if( searchText.equals(Objects.requireNonNull(snap.getValue()).toString()) ){
                         followButtonInSearch.setBackgroundColor(Color.WHITE);
                         followButtonInSearch.setText(R.string.following);
                         followButtonInSearch.setTextColor(Color.BLACK);

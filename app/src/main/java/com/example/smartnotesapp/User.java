@@ -5,5 +5,4 @@ public class User {
     public static String surName;
     public static String email;
     public static String phone;
-
 }

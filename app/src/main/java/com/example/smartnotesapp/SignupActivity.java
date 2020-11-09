@@ -80,13 +80,13 @@ public class SignupActivity extends AppCompatActivity {
         SignUpMail = findViewById(R.id.SignUpMail);
         SignUpPass = findViewById(R.id.SignUpPass);
         auth=FirebaseAuth.getInstance();
-        SignUpButton = (Button) findViewById(R.id.SignUpButton);
+        SignUpButton = findViewById(R.id.SignUpButton);
 
         firebaseAuth=FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        editTextName = (EditText)findViewById(R.id.EditTextName);
-        editTextSurname = (EditText)findViewById(R.id.EditTextSurname);
-        editTextPhoneNo = (EditText)findViewById(R.id.EditTextPhoneNo);
+        editTextName = findViewById(R.id.EditTextName);
+        editTextSurname = findViewById(R.id.EditTextSurname);
+        editTextPhoneNo = findViewById(R.id.EditTextPhoneNo);
         profileImageView = findViewById(R.id.update_imageView);
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
@@ -182,7 +182,7 @@ public class SignupActivity extends AppCompatActivity {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getApplicationContext(), "Profile picture uploaded", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -204,7 +204,6 @@ public class SignupActivity extends AppCompatActivity {
         alertDialog.setView(msg);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                // Perform Action on Button
             }
         });
         new Dialog(getApplicationContext());

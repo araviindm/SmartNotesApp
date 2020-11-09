@@ -1,5 +1,7 @@
 package com.example.smartnotesapp;
 
+import android.annotation.SuppressLint;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
 
 public class PostAdapter extends FirebaseRecyclerAdapter<Posts, PostAdapter.PostsViewHolder> {
@@ -26,8 +33,15 @@ public class PostAdapter extends FirebaseRecyclerAdapter<Posts, PostAdapter.Post
             holder.title.setText(model.getTitle());
             holder.tag.setText(model.getTag());
             holder.post.setText(model.getPost());
-            holder.post_time.setText(model.getPost_time());
-
+        @SuppressLint("SimpleDateFormat") final SimpleDateFormat inputFormat = new SimpleDateFormat();
+        Date date = null;
+        try {
+            date = inputFormat.parse(model.getPost_time());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String ago = (String) DateUtils.getRelativeTimeSpanString(Objects.requireNonNull(date).getTime() , Calendar.getInstance().getTimeInMillis(), DateUtils.MINUTE_IN_MILLIS);
+        holder.post_time.setText(ago);
 
 
     }

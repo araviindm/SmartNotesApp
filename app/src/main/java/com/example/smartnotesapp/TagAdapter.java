@@ -47,11 +47,8 @@ public class TagAdapter extends FirebaseRecyclerAdapter<Posts, TagAdapter.TagsVi
                 holder.followButton.setBackgroundColor(Color.WHITE);
                 holder.followButton.setText(R.string.following);
                 holder.followButton.setTextColor(Color.BLACK);
-
             }
         });
-
-
     }
 
     @NonNull

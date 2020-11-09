@@ -13,8 +13,6 @@ public class UserInfo {
         this.surname = "";
         this.phoneno = "";
     }
-
-    public String getUId(){return uid;}
     public String getUserName() { return name; }
     public String getUserSurname() {
         return surname;
